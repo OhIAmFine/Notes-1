@@ -13,7 +13,6 @@
 
              //最终p还是显示为blue
 
-
 		 	   ...
 		    <style>
 		    *{ color:red;}
