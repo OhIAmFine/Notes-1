@@ -352,3 +352,114 @@
 
 #### 语句
 ***
+- if语句
+
+     推荐使用代码块（使用花括号包围）
+
+- do-while语句
+
+     至少会执行一次
+
+- while 语句
+
+    有可能永远不会执行
+
+- for语句
+
+    同while循环
+
+- for-in语句
+
+    迭代语句，用来枚举对象的属性
+
+         for（var propName in window）{
+                 document.write(propName);     
+                     }
+          //每个循环将window对象中的某个属性赋给propName，直到所有属性都枚举完毕。
+
+    若要迭代的对象为null或undefined，for-in会抛出错误；
+
+    ECMAScript5更正了该行为，不抛出错误，而是停止执行循环体。
+
+    故建议为保证兼容性，使用该循环前线检测对象是否是null或undefined
+
+- label语句
+
+    lable：statement
+
+    在代码中添加标签以便将来使用，一般是和for语句等循环语句使用（break或者continue调用）
+
+- break和continue语句
+
+    break会立即跳出循环，直接执行循环后面的语句；
+
+    continue只是跳出本层循环，然后从循环顶部继续执行。
+
+        //lable语句与break/continue语句的结合
+
+        var num=0;
+        outermost:
+        for(var i =0 ; i<10 ;i++){
+               for(var  j=0;j<10;j++){
+                    if(i==5 && j==5){
+                    break outermost; 
+                    }
+                   num++;
+               } 
+
+         }
+
+        alert(num);  //55,若为continue outermost 则为95
+
+- with语句
+
+    with语句的作用是将代码的作用域设置到一个特定的对象中（简化多次编写同一个对象的工作）
+
+        var qs = location.search.substring(1);
+        var hostName = location.hostname;
+        var url = location.href;
+
+        //以上可以简化为：
+
+        with(location){
+        var qs = search.substring(1);
+        var hostName = hostname;
+        var url = href;
+        }
+        //在with语句内部，每个变量首先被认为是局部变量，而如果在局部环境中找不到该变量的定义，就会查询location对象中是否有同名属性，若发现了同名属性则将location对象属性的值作为变量的值
+
+- switch 语句
+
+       switch语句在比较值时使用全等操作符
+
+#### 函数
+***   
+- 参数
+
+  + 为何ECMAScript中函数不介意传入多少参数，也不在乎传入的是什么类型的参数？
+
+        因为在ECMA内部参数是用一个数组来表示的，传入的参数全部在该数组中，可以通过arguments对象来访问这个参数数组，从而获取给函数传的每一个参数
+
+  + arguement对象   
+
+          + 与数组类似，但并不是Array的实例，可以使用方括号语法来访问它的每一个元素
+          + 通过访问arguement.length可以获知有几个参数（此长度的值是由传入参数的个数决定的，不是由定义函数时的命名参数个数决定的）
+          + arguement可以与命名参数一起使用
+          + 未传递值的命名参数将自动被赋予undefined值
+
+- 没有重载
+
+   + 什么是重载
+
+        允许在同一个范围内声明几个功能类似的同名函数，但这些同名函数的形式函数（参数个数，类型或者顺序）必须不同，也就是用同一个运算符完成不同的运算功能
+
+   + 需要什么条件才能实现重载
+
+        为一个函数编写多个定义，只要这多个定义的签名（接收的参数的类型和数量）不同即可
+
+        ECMAScript中函数的参数是由包含多个值的数组实现的，所以其函数没有签名，不能实现重载
+
+  + 那么如果在ECMAScript中定义两个重名的函数会出现什么情况？
+
+        后者会覆盖前者，即起作用的是后者，前者无效
+    
