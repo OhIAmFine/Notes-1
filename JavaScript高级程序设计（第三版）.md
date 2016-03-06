@@ -2,7 +2,7 @@
 # JavaScript高级程序设计（第三版）笔记
 
  
-> ## 前言：一个月大概读了个七七八八，对于本书知识点有了大体的印象，然而一些更深入的知识却没有完全掌握，故重读此书并加以记录，希望能在重读总结过程中能对知识巩固并加以提升。
+> 前言：一个月大概读了个七七八八，对于本书知识点有了大体的印象，然而一些更深入的知识却没有完全掌握，故重读此书并加以记录，希望能在重读总结过程中能对知识巩固并加以提升。
 
 ### 第一章 JavaScript简介
 
@@ -730,7 +730,7 @@
         在比较的一个参数和数组中的每一个项的时候使用的是全等操作符
   + `lastIndexOf（）`
 
-       与上面的方法相似，只是查找顺序是从尾到头
+        与上面的方法相似，只是查找顺序是从尾到头
 
 + 迭代方法
 
@@ -767,5 +767,154 @@
 
          与上类似，方向从末尾开始遍历
 
-
+####  Date类型
+***     
    
+ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建的，所以Date类型使用自UTC（国际协调时间）1970年1月1日午夜（零时）开始经过的毫秒数来保存日期，可精确到1970年1月1日之前或之后的一亿年。
+
+- 如何创建Date对象
+
+        var now = new Date();
+        /*不传参则自动获得当前日期和时间
+         *若想传入参数，必须是毫秒数（从UTC1970年1月1日至该日期止经过的毫秒数）
+- `Date.parse()` 
+
+    可以将日期转化为毫秒数
+
+    若传入的字符串不能表示日期会返回NaN
+
+        var someDate=new Date("May 25,2011");
+        //直接将表示日期的字符串传给Date构造函数，会在后台调用Date.parse（）
+
+- `Date.UTC()`
+
+    同样返回毫秒数
+
+    参数：年份，基于0的月份（一月份是0），月中的哪一天（1-31），小时数（0-23），分钟，秒和毫秒数
+
+       + 只有年份和月份是必须的，若没有提供月中天数，则假设天数为1；若省略其他参数，则全部设为0 
+
+    也可以按照这个格式传入构造函数中，在后台自动调用`Date.UTC()`
+
+- 方法
+
+   + `toLocaleString（）`
+
+        返回与设置的地区相适应格式的日期和时间，包含AM或PM，但不包含地区信息
+
+  + `toString（）`
+ 
+        返回带有时区信息的日期和时间
+
+  + ` valueOf（）`
+
+        返回日期的毫秒表示
+####  RegExp类型
+***
+
+- 如何创建正则表达式
+
+        var expression = / pattern / flags;
+         /* pattern 部分是正则表达式；
+          * flags为模式标志：g(global);i (不区分大小写) ；m（多行模式，到达一行文本末尾时继续查找下一行中是否存在）
+          * /    
+
+**暂放，待补充正则表达式知识**
+
+####  Function类型
+***
+
+每个函数都是Function类型的实例
+
+- 如何创建函数对象
+
+        var sum = function(num1,num2){
+           //do something
+        };
+
+        var sum = new Function("num1","num2","do something"); // 不推荐
+
+    第二种方法会导致解析两次代码（第一次是解析常规ECMAScript代码，第二次是解析传入构造函数中的字符串）
+
+- 没有重载
+
+    函数名是指针，因此创建同名函数时，后面的会覆盖前面的
+
+- 函数声明与函数表达式
+
+    解析器会首先读取函数声明，使其在执行代码前可用（可访问）；
+  
+    至于函数表达式，则必须等到解析器执行到它所在的代码行，才会被解释执行。
+
+        alert(sum(10,10));   //"20"
+        function sum(num1,num2){
+                   return sum1 + sum2; 
+        }
+      
+        alert(sum(10,10));  //报错
+        var sum=function(num1,num2){
+                   return sum1 + sum2;
+        };
+       
+- 函数内部属性
+
+  + arguments对象
+
+        保存函数参数
+
+        arguments对象有一个callee属性，该属性是一个指针，指向拥有该arguments对象的函数，合理运用可以消除紧密耦合现象
+
+            function  factorial(num) {
+              if(num<=1){
+                 return 1;     
+                }else{
+                 return num*arguements.callee(num-1)   // 这里用arguements.callee替代了factorial ，消除了紧密耦合
+                 }
+               }
+  + this 对象
+
+        this对象引用的是函数执行的环境对象
+
+  + caller属性
+
+        该属性中保存着调用当前函数的函数的引用
+
+- 函数属性和方法
+
+   - length属性
+
+        表示希望接收的命名参数的个数
+
+        而arguements.length表示的是实际传入参数的个数
+
+  - prototype属性
+
+        保存所有实例方法的真正所在
+
+        不可以枚举
+
+  - `apply()`方法
+
+        接收两个参数：作用域；参数数组（例：arguments或者[1,2,3]）
+  - `call()`方法
+
+        接收两个参数：作用域；参数（必须全部都列出来）
+
+  - `bind()`方法
+
+        接收一个参数，绑定作用域
+
+            window.color = "red";
+            var o = { color : "blue"};
+            function sayColor(){
+                      alert(this.color);
+            }
+            var objectSayColor = sayColor.bind(o);
+            objectSayColor();   // "blue"
+
+   - 继承的toString()   toLocaleString()   valueOf()
+
+           返回函数代码
+ 
+
+     
