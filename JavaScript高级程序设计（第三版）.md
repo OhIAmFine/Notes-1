@@ -809,6 +809,7 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
   + ` valueOf（）`
 
         返回日期的毫秒表示
+
 ####  RegExp类型
 ***
 
