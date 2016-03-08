@@ -913,9 +913,159 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
             var objectSayColor = sayColor.bind(o);
             objectSayColor();   // "blue"
 
-   - 继承的toString()   toLocaleString()   valueOf()
+   - 继承的`toString()`   `toLocaleString()`   `valueOf()`
 
            返回函数代码
- 
+
+####  基本包装类型
+***
+ 3个特殊的引用类型：Boolean,Number和String
+
+每当读取一个基本类型值的时候，后台都会创建一个对应的基本包装类型的对象，以便我们能调用一些方法来操作数据，调用完后赋值null销毁该对象
+
+引用类型与基本包装类型的主要区别：
+
+使用new操作符创建的引用类型的实例，在执行流离开当前作用域之前都一直保存在内存中，而自动创建的基本包装类型对象，则只存在与该行代码的执行瞬间，然后立即被销毁（所以我们不能为基本类型值添加属性和方法）。
+
+- Boolean类型
+
+   + 重写了`valueOf（）`方法，返回基本类型值true或false；重写了`toString（）`方法，返回字符串“true”和“false”
+   +  注意点：
+  
+            var falseObject = new Boolean(false);
+            var result = falseObject && true;
+            alert(result)； // true，因为非空对象布尔值永远是true
+
+- Number 类型
+
+   - `toFixed()`方法
+
+      接收一个参数，即要表示为几位小数（若原数小数位大于传入的参数，则采取四舍五入）
+
+  - `toExponential()`
+
+     接收一个参数，表示几位小数（但是转换为e表示法）
+
+  - `toPrecison()`
+
+     接收一个参数，表示数值的所有数字的位数（不包括指数部分）
+
+- String 类型
+
+   -  `charAt()`   `charCodeAt()`
+
+        分别接受一个参数（基于0），其中`charAt()`以字符串方式返回指定位置的字符，而`charCodeAt()`返回字符编码
+     
+        另外可以使用方括号表示法访问字符串中的特定字符
+
+  - 查找字符串方法
+
+     + `indexOf()`
+     + `lastIndexOf（）`
+     
+            搜索给定的子字符串，然后返回子字符串的位置（没有则返回-1）,只返回第一次出现的位置
+
+            还有一个可选参数，指定从何处开始搜索
+  - `trim（）` 
+
+        创建一个字符串副本，删除前置和后缀的所有空格，然后返回结果
+
+  - 大小写转换方法
+      + `toLowerCase（）`
+      + `toUpperCase（）`
+      + `toLocaleLowerCase()`
+      + `toLocaleUpperCase()`
+
+        不清楚代码将在何种语言下运行的情况下，使用后两种方法较为稳妥
+
+  - 字符串的模式匹配方法
+
+     + `replace()`
+
+            接收两个参数：第一个参数可以是RegExp对象或者一个字符串，第二个参数是一个字符串或者一个函数
+
+            如果第一个参数是字符串，则只会替换第一个子字符串；要想替换所有子字符串，提供一个正则表达式并指定g（全局）标志
+
+     + `split()`
+     
+            接收两个参数，分隔符和数组大小
+
+     + `fromCharCode()`
+     
+            接收多个字符编码转换为一个字符串  
+
+####  单体内置对象
+***
+
+- Global
+
+   + URL编码方法
+
+       + `encodeURL() ` `encodeURLComponent()`
+
+            前者只会对不属于URL的特殊字符进行编码，例如冒号，斜杠，问号，井字号等均会保留；
+
+            后者会对他发现的任何非标准字符进行编码
+
+     + `decodeURL()`  `decodeURLComponent()`
+
+   + `eval()`
+
+        只接受一个参数，即要执行的ECMAScript字符串
+
+- Math对象
+
+    - `min()`  `max()`
+
+        求数组中最小值和最大值
+
+   - 舍入方法
+
+     + `Math.ceil()`  数值向上舍入为整数
+     + `Math.floor()` 向下舍入为整数
+     + `Math.round()` 四舍五入
+
+   - `random()`
+
+        返回大于0而小于1的一个随机数
+### 第六章 面向对象的程序设计
+
+####  理解对象
+***     
+   - 属性类型
+
+      - 数据属性
+
+          - [[Configurable]]:能否通过delete删除属性从而重新定义属性，能否修改属性特性，或者能否把属性修改为访问器属性。默认为true
+          - [[Enumerable]]: 能否通过for-in循环返回属性。默认为true
+          - [[Writable]]:能否修改属性的值。默认为true
+          - [[Value]]: 包含这个属性的数据值。读取和写入都是从这里开始。默认值为 undefined
+          - 如何修改属性默认的特性？
+
+             使用Object.defineProperty()方法，三个参数：属性所在的对象，属性的名字和描述符对象（以上四个之一）
+
+                 Object.defineProperty(person,"name",{
+                        writable:false,
+                        value:"Tom"
+                    });
+
+          - 若把[[Configurable]]特性设置为false，则不能修改除writable之外的特性
+
+      - 访问器属性
+
+           - [[Configurable]]
+          - [[Enumerable]]
+          - [[Get]]:读取属性时调用的函数，默认为undefined
+          - [[Set]]:在写入属性时调用的函数，默认为undefined
+
+   - 定义多个属性
+
+      使用`Object.defineProperties()`方法
+
+   - 读取属性的特性
+
+     使用`Object.getOwnPropertyDescriptor()`方法
+
+     这个方法接收两个参数，属性所在的对象和要读取的属性名称。返回一个对象，其属性值包括上述四个描述符，访问即可。
 
      
