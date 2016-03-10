@@ -42,7 +42,7 @@
 
          传统做法：放在`<head>`标签中  弊端：浏览器遇到<body/>元素才开始呈现页面内容，故所有脚本文件下载解析执行完成后才开始呈现
 
-         建议做法：放在`</body>`前或包裹于`window.onload=function(){}`中
+         建议做法：放在`</body>`前或将其代码包裹于`window.onload=function(){}`中
 
  + 使用外部文件的好处
  
@@ -1068,4 +1068,119 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
 
      这个方法接收两个参数，属性所在的对象和要读取的属性名称。返回一个对象，其属性值包括上述四个描述符，访问即可。
 
-     
+ 
+####  创建对象
+***    
+
+  - 工厂模式
+  
+         function createPerson(name,age,sex){
+               var o = new Object();
+               o.name = name;
+               o.age = age;
+               o.sex = sex;
+               o.sayName = function (){
+                     alert (this.name);
+               };
+              return o;
+         }
+         // 没有解决对象识别的问题（即如何判断该对象的类型）   
+
+  - 构造函数模式
+
+         function Person(name,age,sex){
+              this.name = name;
+              this.age = age;
+              this.sex = sex;
+              this.sayName = function(){
+                     alert(this.name);   
+               };   
+         }
+         //构造函数可以用来创建特定类型或者自定义的对象，从而定义自定义对象类型的属性和方法；
+         //构造函数函数名使用大写字母开头；
+         //创建实例必须使用new操作符
+         //person1既是Person的实例，也是Object的实例
+          var person1 = new Person("Jack","24","male");
+         //问题在于，每个实例上每个方法都要重创建一遍 ，若把方法置于全局，则封装性差
+
+ - 原型模式
+
+       每个函数都有一个prototype属性，这个属性是一个指针，指向一个包含可以由特定类型的所有实例共享的属性和方法的对象。
+
+       即prototype是通过构造函数创建的那个对象实例的原型对象。
+         
+         function Person(name,age,sex){
+              Person.prototype.name = name;
+              Person.prototype.age = age;
+              Person.prototype.sex = sex;
+              Person.prototype.sayName = function(){
+                     alert(this.name);   
+               };   
+         }
+
+    - 理解原型对象
+
+      创建新函数就会为该函数创建一个prototype属性，这个属性指向函数的原型对象，默认情况下，所有原型对象都会自动获得constructor属性，这个属性包含一个指向prototype属性所在函数的指针
+
+      创建自定义构造函数后，原型对象默认只会获得constructor属性，其他方法均从Object继承而来；
+
+      调用构造函数创建一个实例后，该实例内部包含一个指针（内部属性），指向构造函数的原型对象 ，ECMA5中叫做[[prototype]]
+
+      无法访问到[[prototype]],但是可以调用`isPrototypeOf()`方法：
+
+        alert (Person.prorotype.isPrototypeOf(person1));  // true
+
+      ECMAScript5中增加的新方法  `Object.getPrototypeOf()`:
+         
+        alert(Object.getPrototypeOf(person1) == Person.prototype); // true
+
+      每当代码读取某个对象的某个属性时，都会执行一次搜索，首先从对象实例本身开始，如果在实例属性中找到，则直接返回该属性的值；若没有找到，则继续搜索指针指向的原型对象
+
+     当为对象实例添加一个属性时，这个属性会屏蔽掉原型对象中的同名属性，也就是说，不会修改原型对象中的同名属性值，只是阻止我们通过对象实例属性去访问它。
+
+     使用`hasOwnProperty()`检测一个属性是存在于实例中，还是存在于原型中（只有在给定属性存在于对象实例中时返回true,存在于原型中或者压根儿不存在都是false）：
+
+        alert(person1.hasOwnProperty("name"));
+
+     - 原型与in操作符
+
+        - 单独使用in操作符
+
+                function hasPrototypeProperty（object，name）{
+                          return  !object.hasOwnProperty(name) && name in object
+                }
+                //主要是要区分属性到底是不存在还是存在于原型中
+
+        - for-in循环
+
+             返回的是所有能够通过对象访问的，可枚举的属性（不论其存在于实例中还是原型中）
+
+            屏蔽了原型中不可枚举属性的实例属性也会被枚举
+
+       - `Object.keys() `
+
+            接收一个对象作为参数返回一个包含所有可枚举属性的字符串数组
+
+       - `Object.getOwnPropertyNames()`
+       
+            得到所有实例属性，不论其是否可枚举 
+
+     - 更简单的原型语法
+
+             function Person(){}
+             Person.prototype = {
+                   name:"王二"，
+                   age：28，
+                   sex：“male”，
+                  sayName：function(){
+                            alert(this.name);
+                  }
+            }
+
+            var person1 = new Person();
+            alert(person1 instanceof  Object);  // true
+            alert(person1 instanceof Person);  // true
+            alert(person1.constructor == Person); // false
+            alert(person1.constructor == Object);  // true
+
+            //可以在属性中显式设置constructor属性值为Person，但是这样会导致它的[[Enumerable]]特性设置为true（即可以被枚举）。
