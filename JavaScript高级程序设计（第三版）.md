@@ -1109,14 +1109,15 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
 
        即prototype是通过构造函数创建的那个对象实例的原型对象。
          
-         function Person(name,age,sex){
-              Person.prototype.name = name;
-              Person.prototype.age = age;
-              Person.prototype.sex = sex;
-              Person.prototype.sayName = function(){
+         function Person(){
+                   }
+         Person.prototype.name = name;
+         Person.prototype.age = age;
+         Person.prototype.sex = sex;
+         Person.prototype.sayName = function(){
                      alert(this.name);   
-               };   
-         }
+          };   
+         
 
     - 理解原型对象
 
@@ -1182,5 +1183,84 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
             alert(person1 instanceof Person);  // true
             alert(person1.constructor == Person); // false
             alert(person1.constructor == Object);  // true
-
+            //这里的语法完全重写了默认的prototype对象
             //可以在属性中显式设置constructor属性值为Person，但是这样会导致它的[[Enumerable]]特性设置为true（即可以被枚举）。
+
+     - 原型的动态性
+
+         原型中查找值是一次搜索，所以对原型对象做的任何修改都可以立即从实例中反映出来；
+
+         重写原型对象切断了现有原型和实例之间的联系。
+
+     - 原型对象的原型
+
+         通过原声对象的原型，不仅可以取得所有默认方法的引用，而且也可以定义新方法。
+
+     - 原型对象的问题
+
+         - 默认情况下所有实例都取得相同的属性值；
+         - 不管是基本类型值还是引用类型值，都可以通过在实例上添加一个同名属性来隐藏原型中的对应属性（书上说基本类型值和引用类型值不同，只是说向其中数组添加新字符串时候会影响全局）
+
+- 组合使用构造函数模式和原型模式    
+
+    构造函数模式用于定义实例属性，原型模式用于定义方法和共享的属性
+
+        function Person(name,age,sex){
+               this.name = name;
+               this.age = age;
+               this.sex = sex;
+        }
+        Person.prorotype = {
+              constructor :Person,
+              sayName: function(){
+                 alert(this.name); 
+              }
+        }
+        //此时若创建新实例，实例数组作修改不会影响另一个实例
+        //此方法是目前使用最广泛，认同度最高的一种创建自定义类型的方法
+
+- 动态原型模式
+
+      通过检查某个方法是否存在来初始化原型
+
+        function Person(name,age,sex){
+              this.name = name;
+              this.age = age;
+              this.sex = sex;
+              if(typeof this.sayName != "function"){
+                   Person.prototype.sayName = function(){
+                      alert(this.name);
+                       }
+                   }
+         }
+        //如果有很多要进行初始化的属性和方法，只需要检查其中一个即可
+        //很完美
+
+- 寄生构造函数模式
+
+     与工厂模式差不多，只是使用了new操作符创建实例
+
+    构造函数在不返回值的情况下，默认会返回新对象实例；而通过在构造函数末尾添加return语句，可以重写调用构造函数时返回的值
+
+    这种模式下差ungjiande实例与构造函数以及构造函数的原型之间没有关系
+
+    不建议使用。
+
+- 稳妥构造函数模式
+
+     稳妥对象指的是没有公共属性，且其方法不引用this的对象。
+
+     大体与寄生构造函数模式一样，不同点为：一是实例方法不使用this；二是不使用new操作符调用构造函数
+
+    适合于某些安全执行环境
+
+####  继承
+***    
+
+许多OO语言都支持两种继承方式：接口继承和实现继承；
+
+接口继承只继承方法签名，实现继承则继承实际的方法。
+
+ECMAScript中的函数没有签名，所以只支持实现继承，而实现继承主要依靠原型链来实现。
+
+- 原型链
