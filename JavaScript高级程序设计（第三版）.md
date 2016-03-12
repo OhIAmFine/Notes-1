@@ -1264,3 +1264,79 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
 ECMAScript中的函数没有签名，所以只支持实现继承，而实现继承主要依靠原型链来实现。
 
 - 原型链
+
+    - 本质就是将A函数的实例赋给B函数的原型对象，这样B函数的原型对象中就拥有了A函数原型对象的方法，B函数的实例同样如此，即实现了继承。
+
+    - 所有函数的默认原型都是Object的实例，因此默认原型均包含一个指向Object.prototype的指针；
+
+    - 如何确定原型和实例之间的关系？
+
+        - 使用 instanceof操作符    （实例与原型链中出现过的构造函数）
+        - 使用 isPrototypeOf() 方法   （实例与原型链所派生的实例的原型）
+
+- 借用构造函数
+
+        function SuperType(){
+          this.colors = ["red","blue","green"];
+        }
+        SuperType.prototype.sayColors = function() {
+          alert(this.colors);
+        }
+        function SubType(){
+         //继承了SuperType，
+         //实际上是(未来将要)新建的SubType实例的环境下调用了SuperType构造函数，这样SubType的每个实例都会具有自己的colors属性的副本了，这样在各个实例中修改colors数组不会相互影响了
+         //sayColors却无法继承
+         SuperType.call(this);
+        }
+- 组合继承
+
+    综合原型链和构造函数两者之长
+
+        function SuperType(name){
+          this.name = name;
+          this.colors = ["red","blue","green"];
+        }
+        SuperType.prototype.sayColors = function() {
+          alert(this.colors);
+        }
+        function SubType(name，age){
+         //继承了SuperType的属性
+         SuperType.call(this，name);
+         this.age = age;
+        }
+         //继承方法
+         SubType.prototype = new SuperType();
+         SubType.prototype.constructor = SubType;
+         SubType.prototype.sayAge = function() {
+                   alert (this.age);
+         };
+
+- 原型式继承
+
+        var person = {
+                  name: "Tom";
+                  friends:["Jack","Sawyer","John"];
+        }
+        var aontherPerson = Object.create(person);
+        anotherPerson.friends.push("Bob");
+        alert(person.friends);   //"Jack","Sawyer","John","Bob"
+
+- 寄生式继承
+
+        function createAnother(original){
+            var clone = object(original);
+            clone.sayHi = function(){
+               alert("hi");
+               };
+            return clone;
+        };
+
+- 寄生组合式继承
+
+    解决两次调用问题   //**这块不是很懂。**
+
+     [构造函数的继承](http://www.jb51.net/article/28128.htm)
+
+     [非构造函数的继承](http://www.jb51.net/article/28129.htm)
+
+     //以上两个链接讲的很清楚，赞
