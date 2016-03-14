@@ -1333,10 +1333,135 @@ ECMAScript中的函数没有签名，所以只支持实现继承，而实现继�
 
 - 寄生组合式继承
 
-    解决两次调用问题   //**这块不是很懂。**
+    解决两次调用问题   
 
      [构造函数的继承](http://www.jb51.net/article/28128.htm)
 
      [非构造函数的继承](http://www.jb51.net/article/28129.htm)
 
      //以上两个链接讲的很清楚，赞
+
+### 第七章 函数表达式
+
+定义函数的方式：函数声明；函数表达式
+
+#### 递归  
+***     
+
+arguments.callee是一个指向正在执行的函数的指针、
+
+#### 闭包  
+***     
+作用域链实质上是一个指向变量对象的指针列表，它只引用但并不包含变量对象；
+
+一般来说，函数执行完毕后，局部活动对象就会被销毁，内存中仅保存全局作用域。
+
+闭包中可以将内部函数设置为null，以便释放内存
+
+- 闭包与变量
+
+        function createFunctions(){
+            var result = new Array();
+            for (var i = 0; i<10;i++){
+                result[i] = function(){
+                       return i;  
+                      }
+                }
+           return result;
+        }
+        // 执行该函数返回的数组全是10
+        // 因为闭包保存的是整个变量对象，而不是某个变量的值（在这里保存了i的引用）
+
+- 关于this对象
+  
+    这块儿多看文章吧
+   
+- 内存泄漏
+
+    在IE旧版本中，若闭包的作用域链中保存着一个HTML元素，那么意味着该元素将无法被销毁（循环引用）
+
+#### 模仿块级作用域 
+***     
+
+  JavaScript从来不会告诉你是否多次声明了同一个变量：遇到这种情况只会对后续的声明视而不见（但是会执行后续声明中的变量初始化）
+
+  - 如何创建私有作用域？
+   
+            (function(){
+               //这里是块级作用域
+               }) () 
+
+        临时需要一些变量的时候可以使用私有作用域
+
+#### 私有变量 
+***   
+
+   在对象上创建特权方法的方式：
+
+   - 在构造函数中定义特权方法
+
+            function MyObject(){
+                  //私有变量和私有函数
+                  var privateVariable = 10;
+                  function privateFunction(){
+                     return false;  
+                  }
+                 //特权方法
+                 this.publicMethod = function(){
+                    privateVariable++;
+                    return privateFunction();
+                 }
+            }
+   - 静态私有变量
+   - 模块模式
+   - 增强的模块模式
+
+### 第八章 BOM
+
+#### window对象 
+***  
+BOM核心对象是window，它表示浏览器的一个实例。在浏览器中，window对象既是通过JavaScript访问浏览器窗口的一个窗口，又是ECMAScript规定的Global对象。
+
+- 全局作用域
+      
+    所有在全局作用域中声明的变量，函数都会变成window对象的属性和方法。
+
+    全局变量不能通过delete操作符删除，而直接在window对象上定义的属性可以删除。
+
+    尝试访问未声明的变量会抛出错误，但是可以通过查询window对象知晓某个可能未声明的变量是否存在
+
+         var  newValue = oldValue;   // 抛出错误，因为oldValue未定义；
+
+         var newValue = window.oldValue;  //不会抛出错误，只是一次属性查询；
+
+- 窗口关系及框架
+
+    与window对象相关的几个属性：top parent self
+
+     - top 
+
+        top对象始终指向最高（最外）层的框架，也就是浏览器窗口
+     - parent
+     
+        始终指向当前框架的直接上层框架
+
+        在某些情况下，parent有可能等于top；但在没有框架的情况下，parent一定等于top（都等于window）  
+
+    - self
+    
+        始终指向window	  
+
+- 窗口位置
+
+      IE,Safari,Opera和Chrome提供` screenLeft `和`screenTop`属性，分别用于表示窗口相对于屏幕左边和上边的位置；
+
+      Firefox则在`screenX`和`screenY`属性中提供相同的窗口位置信息（safari和chrome同时支持这两个属性）
+
+    不同点： IE，Opera中保存的是可视窗口到屏幕的距离（即不包括浏览器工具栏宽度），而其余浏览器中保存的是整个浏览器窗口到屏幕边的距离
+
+    `moveTo()` 接收新位置的x和y的值； `moveBy()`接收在水平或者垂直方向移动的像素数
+      
+      
+          
+
+  
