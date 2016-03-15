@@ -1460,8 +1460,113 @@ BOM核心对象是window，它表示浏览器的一个实例。在浏览器中�
     不同点： IE，Opera中保存的是可视窗口到屏幕的距离（即不包括浏览器工具栏宽度），而其余浏览器中保存的是整个浏览器窗口到屏幕边的距离
 
     `moveTo()` 接收新位置的x和y的值； `moveBy()`接收在水平或者垂直方向移动的像素数
-      
-      
-          
 
-  
+
+### 第九章 客户端检测
+
+### 第十章 DOM
+
+DOM是针对HTML和XML文档的一个API（应用程序编程接口）
+
+#### 节点层次 
+***       
+
+文档节点是每个文档的根节点
+
+文档元素是文档的最外层元素，文档中的其他所有元素都包含在文档元素中。每个文档只能有一个文档元素。
+
+在HTML页面中，文档元素始终都是<html>元素。在XML中，没有预定义的元素，因此任何元素都可能成为文档元素。
+
+- Node类型
+
+    DOM1级定义了一个Node接口，该接口将由DOM中的所有节点类型实现。
+    
+    JS中的所有节点类型都继承自Node类型，因此所有节点类型都共享这相同的基本属性和方法。
+
+    每个节点都有一个nodeType属性，用于表明节点的类型。节点类型由在Node类型中定义的下列12个**数值常量**来表示：
+
+    Node.ELEMENT_NODE(1);
+
+    Node.ATTRIBUTE_NODE(2);
+
+    Node.TEXT_NODE(3);
+
+    Node.CDATA_SECTION_NODE(4);
+
+    ....
+
+        //由于IE没有公开Node类型的构造函数，下列判断节点类型方法在IE中无效：
+        if（someNode.nodeType == Node.ELEMENT_NODE）{
+           alert("Node is an element")；
+        }
+        //保证兼容，采用下列方法
+        if(someNode.nodeType == 1){
+           alert("Node is an element");
+        }
+
+     - nodeName和nadeValue属性
+
+         对于元素节点，nodeName中保存的始终是元素的标签名，而nodeValue的值始终是null。
+
+     - 节点关系
+
+         - 每个节点都有一个childNodes属性，其中保存着一个NodeList对象。NodeList是一种类数组对象，用于保存一组有序的节点，可以通过位置来访问这些节点（可以通过方括号语法访问NodeList的值，而且也有length属性，但是它不是Array的实例）。
+
+        -   NodeList对象独特之处：实际上是基于DOM结构动态执行查询的结果，因此DOM   结构能够自动反映到NodeList对象中。
+
+                someNode.childNodes[0];
+                someNode.childNodes.item[0];
+                someNode.childNodes.length;  //访问的都是那一个瞬间的状态！
+
+       - 如何将NodeList对象转换为数组？
+
+                function convertToArray(nodes){
+                     var array = null;
+                     try  {
+                         array = Array.prototype.slice.call(nodes,0); 
+                        //针对非IE浏览器,0是传给slice方法的，表示从头开始遍历
+                       }catch(ex){
+                         array = new Array();
+                         for (var i = 0,len = nodes.length; i<len; i++){
+                                array.push(nodes[i]);
+                               }
+                    }
+                   return array;
+                }
+                //nodes指的是someNode.childNodes
+
+         
+        - 每个节点都有一个parentNode属性，该属性指向文档树中的父节点。此外，在childNodes列表中的每个节点之间都是同胞节点previousSibliing和nextSibling
+
+        - `hasChildNodes()`在节点包含一或多个子节点的情况下返回true
+        - 所有节点都有的一个属性ownerDocument，该属性指向表示整个文档的文档节点
+
+     - 操作节点
+
+        关系指针全部是只读的。
+
+        以下方法都是在父节点上进行操作：
+
+        - `appendChild()`
+
+            用于向childNodes列表的末尾添加一个节点；若该节点已经存在于DOM中，则将其移动到末尾位置（任何DOM节点不能同时存在于文档中的多个位置上）
+
+        - `insertBefore()`
+
+            接收两个参数：要插入的节点和作为参照的节点。
+
+            插入节点后，被插入的节点会成为作为参照的节点的前一个同胞节点，同时被返回；若参照节点是null，则执行与`appendChild()`相同的操作。
+
+        - `replaceChild()`
+
+            接收两个参数：要插入的节点和要替换的节点，返回要替换的节点
+
+        - `removeChild()`
+
+            接收一个参数：即要移除的节点
+
+     - 其他方法
+
+        - `cloneNode()`
+
+            接收一个
