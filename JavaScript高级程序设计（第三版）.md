@@ -103,65 +103,53 @@
 ***
  + 均不能用作标识符
  + 在严格模式和非严格模式下保留字有所增减
+ 
 ####变量
 ***
  -  松散类型（可以用来保存任何类型的数据）
  -  局部变量和全局变量
-    
-              function test(){
-                        var message="哈哈"；//定义局部变量
-                     }
-              test(); //执行一次函数
-              alert(message);//错误 ，若在函数中定义变量时省略var，则定义了全局变量，此处将不会报错
+ 
+        function test(){
+        var message="哈哈"；//定义局部变量
+         }
+        test(); //执行一次函数
+        alert(message);//错误 ，若在函数中定义变量时省略var，则定义了全局变量，此处将不会报错
 
  - 同时定义多个变量，用逗号分隔
 
-               var me="Chinese" ，
-                     him=“Japanese”，
-                     you="Korean"；     
+        var me="Chinese" ，
+        him=“Japanese”，
+        you="Korean"；     
 
 #### 数据类型
 ***
 - Undefined 
       
-	       var message;
-	    
-	       alert(message);//"undefined"
-	     
-	       alert(name);//抛出错误
-
-		   alert（typeof message）；//“undefined”
-		
-		   alert（typeof name）；“undefined”
-
-             //最好的做法是：每当定义一个变量的时候都应当赋予其初始值，这样当typeof操作符显示“undifined”时，我们就知道这个变量未声明
+	    var message;
+	    alert(message);//"undefined"
+        alert(name);//抛出错误
+	    alert（typeof message）；//“undefined”
+		alert（typeof name）；“undefined”
+        //最好的做法是：每当定义一个变量的时候都应当赋予其初始值，这样当typeof操作符显示“undifined”时，我们就知道这个变量未声明
    
 - Null
 
-    		var message=null;
-
-           alert(typeof message);//"object"      null值表示一个空对象指针
-
-           alert（null == undefined;//"true"     undefined派生自null值
-
-           //另外只要意在保存对象的变量还未真正保存对象，则应赋予其null值：一可体现null作为空对象指针的惯例；二可区分null和undefined
+    	var message=null;
+        alert(typeof message);//"object"      null值表示一个空对象指针
+        alert（null == undefined;//"true"     undefined派生自null值
+        //另外只要意在保存对象的变量还未真正保存对象，则应赋予其null值：一可体现null作为空对象指针的惯例；二可区分null和undefined
 
 - Boolean
 
 
  	    /*字面值有true和false两个（注意区分大小写）
-
          *转型函数Boolean()可以将一个值转换为对应的布尔值
          *转换成false的有：空字符串，0和NaN，null，undefined
-
          * /
-         
          //流控制语句会自动执行转换，如下：
-
          var name="zhang san";
-
          if(name){
- 			alert("yes");  //  "yes"
+ 	      alert("yes");      // "yes"
              }
         
 - Number
@@ -189,7 +177,7 @@
 
          `Number（）`
 
-         可以用于任何数据类型（null值返回0，undefined值返回NaN，对象的话先调用`valueOf（）`，若返回NaN，则调用`toString()`）
+         可以用于任何数据类型（null值返回0，undefined值返回NaN，对象的话先调用`valueOf（）`，若返回NaN，则调用`toString()`
 
          `parseInt()`
    
@@ -203,7 +191,7 @@
 
          `parseFloat（）`
 
-          可解析第一个小数点，之后的小数点无效；
+         可解析第一个小数点，之后的小数点无效；
 
          始终忽略前导的0（只解析十进制值）；
 
@@ -220,7 +208,6 @@
         调用数值的时候可以传入转换进制数的参数，如下：(不传参默认十进制)
 
               var num=10；
-
               alert（num.toString(8)）;//  "12"
 
          还有`String()`方法，相当于对`toString（）`方法的扩展，在null和undefined值时返回“null”和“undefined”
@@ -255,9 +242,8 @@
 
        负数使用二进制补码存储：1.求该数值绝对值的二进制码；2.反码并加1
 
-            var num= - 8;
-
-            alert(num.toString(2));   //  "-1000"     更合乎逻辑的形式
+        var num= - 8;
+        alert(num.toString(2));   //  "-1000"     更合乎逻辑的形式
 
        对NaN和Infinity值应用位操作符时，都会被当成0处理
 
@@ -307,8 +293,7 @@
 
         属于短路操作
 
-              var myObject=preferredObject || backupObject ;
-           
+              var myObject=preferredObject || backupObject ;   
               //如果pO中值不是null,那么它将被赋给mO；反之则将bO赋给mO
 
 - 乘性操作符
@@ -337,7 +322,6 @@
      即三目运算符
 
         var max=(num1>num2)？num1：num2 ；
- 
         //若num1大于num2，则将num1赋给num，反之将num2赋给num 
    
 - 赋值操作符
@@ -750,7 +734,8 @@
 
         对数组中每一项都运行给定函数，无返回值
 
-  + `map（）`
+  + `
+  + （）`
 
         对数组中每一项运行给定函数，返回每次函数调用结果组成的数组
 
@@ -1569,4 +1554,186 @@ DOM是针对HTML和XML文档的一个API（应用程序编程接口）
 
         - `cloneNode()`
 
-            接收一个
+            用于创建调用这个方法的节点的一个完全相同的副本（不会复制添加到DOM节点中的js属性）
+
+            接收一个布尔值参数，true执行深复制，也就是复制节点及其整个子节点树；false即只复制节点本身。
+
+            复制后返回的节点副本属于文档所有，但并没有为它指定父节点。 成为了“孤儿”。
+        - `normalize()` 
+
+            处理文档树中的文本节点。当在某个节点上调用这个方法时，找到空文本则删除它；如果找到相邻的文本节点，则将它们合并为一个文本节点。
+
+- Document类型
+
+       document对象是HTMLDocument的一个实例，表示整个HTML页面。
+
+      document对象是window对象的一个属性，因此可以作为全局对象来访问。
+
+       - 文档的子节点
+   
+          内置的访问子节点的快捷方式：
+
+           -  documentElement属性
+           -  通过childNodes列表访问文档元素
+          - `document.body`直接指向body元素 
+          - 可能的子节点 DocumentType，通过document.doctype属性访问信息
+
+          文档类型是只读的，而且它只能有一个元素子节点.
+
+      - 文档信息
+
+           - `title`
+
+              `document.title`取得当前页面的标题，也可以修改（会改变<title>元素）
+
+           - `URL` ， `domain` 和`referrer`
+
+               `URL`中包含页面完整的URL（即地址栏显示的URL）；
+
+               `domain`只包含页面的域名；
+
+              `referrer`中保存着链接到当前页面的那个页面的URL（无则包含空字符串）
+
+               三个属性中只有domain可以设置，但是不能将这个属性设置为URL中不包含的域。另外如果将其设置为wrox.com之后就不能再将其设置回p2p.wrox.com了。（即不能从松散loose回到紧绷tight）
+
+       - 查找元素
+
+           - `getElementById()`
+
+              IE8及较低版本不区分ID大小写
+
+          - `getElementsByTagName()`
+
+              在HTML文档中返回一个HTMLCollection对象，与NodeList非常类似，即可以像数组那样用方括号语法或item()方法访问其中的项。
+
+             HTMLCollection对象有一个namedItem()方法，可以取得元素集中name属性为特定值的元素；同时支持用name属性值方括号访问元素
+
+          - `getElementsByName()`
+
+             返回带有给定name特性的所有元素
+
+       - 特殊集合
+       - DOM一致性检测
+                  
+           document.implemention.hasFeature()接收两个参数：要检测的DOM功能名称和版本号
+
+       - 文档写入
+
+          - `write()`和`writeIn()`
+
+             write()会原样写入，writeIn()则会在字符串末尾添加一个换行符（\n）
+
+             文档加载结束后再调用document.write()那么输出的内容将会重写整个页面
+
+          - `open()`和`close()`
+
+             用于打开和关闭网页输出流
+
+- Element类型
+
+     要访问元素的标签名，可以使用`nodeName`，也可以使用`tagName`。
+
+      - HTML元素 
+
+           所有HTML元素都由HTMLElement类型表示
+     - 取得特性
+
+           - `getAttribute()`
+
+               甚至可以取得自定义特性，根据HTML5规范，自定义特性应该加上data-前缀以便验证
+
+               通过该方法访问style属性时，返回css文本，而通过.属性访问则返回一个对象（style属性是以变成方式访问元素样式的）；
+
+               通过该方法访问onclick时，返回相应代码的字符串；通过属性访问时则返回一个js函数
+
+      - 设置特性
+           - `setAttribute()`
+
+              可以操作HTML特性，也可以操作自定义特性。通过该方法设置的特性名会被统一转换为小写。
+           - `removeAttribute()`
+
+               不仅会删除特性的值，而且会从元素中完全删除特性
+
+      - attributes属性
+
+         Element类型是使用attributes属性的唯一一个DOM节点类型。
+
+         attributes属性中包含一个类似于NodeList的NamedNodeMap         
+     - 创建元素
+
+         - `document.createElement()`
+
+            只接受一个参数，即要添加的元素的标签名
+    - 元素的子节点
+
+        IE解析会包括文本节点，其余浏览器会忽略掉文本节点
+
+- Text类型
+
+     每个可以包含内容的元素最多只能有一个文本节点（必须有确实内容存在，空格也可）
+
+     修改文本时，字符串会经过HTML编码（被转义）
+         
+   - 创建文本节点
+ 
+        `document.createTextNode()`  
+
+         只接受一个参数，要插入节点中的文本
+
+        若两个文本节点是相邻的同胞节点，那么这两个节点中的文本就会连起来显示，中间不会有空格
+
+
+   - 规范化文本节点
+
+        `normalize()`
+
+         若在一个包含两个或者多个文本节点的父元素上调用该方法，则会将所有文本节点合并成一个节点，结果节点的nodeValue值等于合并前每个文本节点的nodeValue值拼接起来的值。
+
+  - 分割文本节点
+
+        `splitText()`
+
+         接收一个参数，从该参数指定位置进行分割
+
+        这是从文本节点中提取数据的常用DOM解析技术
+
+- Comment类型
+
+    与Text类型继承自相同的基类，所以拥有除splitText()之外的所有字符串操作方法。
+
+- CDATASection类型
+- DucumentType类型
+
+    document.doxtype.name  保存着文档类型
+
+- DocumentFragment类型
+
+    文档片段，用于避免多次添加内容到文档树上导致的重复渲染。
+
+    即先添加到文档片段上，在一次性添加到文档树上（文档片段本身永远不会成为文档树的一部分）
+
+- Attr类型
+
+   元素的特性类型，一般不使用
+
+#### DOM操作技术
+***     
+
+- 动态脚本
+
+    指的是页面加载时候不存在，但在将来某一时刻的时候通过修改DOM动态添加的脚本。
+
+    IE将`<script>`视为一个特殊的元素，不允许DOM访问其子节点。但是可以使用`<script>`元素的text属性来指定js代码
+
+- 动态样式
+
+    指的是～～～的样式
+
+    IE存在与上述相同的问题，可以访问styleSheet属性的cssText属性来修改。
+
+    将cssText设置为空字符串可能会导致IE崩溃。
+
+- 操作表格
+- 使用NodeList
+
+    理解 NodeList   NamedNodeMap   HTMLCollection 三个动态对象
