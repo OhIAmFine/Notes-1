@@ -1057,7 +1057,7 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
 ####  创建对象
 ***    
 
-  - 工厂模式
+- 工厂模式
   
          function createPerson(name,age,sex){
                var o = new Object();
@@ -1070,8 +1070,7 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
               return o;
          }
          // 没有解决对象识别的问题（即如何判断该对象的类型）   
-
-  - 构造函数模式
+- 构造函数模式
 
          function Person(name,age,sex){
               this.name = name;
@@ -1088,7 +1087,7 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
           var person1 = new Person("Jack","24","male");
          //问题在于，每个实例上每个方法都要重创建一遍 ，若把方法置于全局，则封装性差
 
- - 原型模式
+- 原型模式
 
        每个函数都有一个prototype属性，这个属性是一个指针，指向一个包含可以由特定类型的所有实例共享的属性和方法的对象。
 
