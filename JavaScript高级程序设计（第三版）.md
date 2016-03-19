@@ -555,7 +555,7 @@
 
       	IE中有一部分对象并不是原生js对象，比如其BOM和DOM中的对象就是使用C++以COM对象的形式实现的，而COM对象的垃圾收集机制采用的就是引用计数策略
 
-            可以使用代码将其设置为null清除引用
+           可以使用代码将其设置为null清除引用
        
 ### 第五章 引用类型
 
@@ -1013,8 +1013,8 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
    - `random()`
 
         返回大于0而小于1的一个随机数
-### 第六章 面向对象的程序设计
 
+### 第六章 面向对象的程序设计
 ####  理解对象
 ***     
    - 属性类型
@@ -1104,7 +1104,7 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
           };   
          
 
-    - 理解原型对象
+- 理解原型对象
 
       创建新函数就会为该函数创建一个prototype属性，这个属性指向函数的原型对象，默认情况下，所有原型对象都会自动获得constructor属性，这个属性包含一个指向prototype属性所在函数的指针
 
@@ -1584,7 +1584,7 @@ DOM是针对HTML和XML文档的一个API（应用程序编程接口）
 
            - `title`
 
-              `document.title`取得当前页面的标题，也可以修改（会改变<title>元素）
+              `document.title`取得当前页面的标题，也可以修改（会改变`<title>`元素）
 
            - `URL` ， `domain` 和`referrer`
 
@@ -1737,3 +1737,89 @@ DOM是针对HTML和XML文档的一个API（应用程序编程接口）
 - 使用NodeList
 
     理解 NodeList   NamedNodeMap   HTMLCollection 三个动态对象
+
+### 第十一章 DOM扩展
+
+#### 选择符API
+***     
+
+- `querySelector()`
+ 
+    接收一个css选择符，返回与其匹配的第一个元素（可以在Document类型上调用，也可在Element类型上调用）
+
+- `querySelectorAll()`
+
+    接收一个css选择符，但是返回所有匹配的元素（NodeList的实例），底层实现类似于一组元素的快照，而非不断对文档进行搜索的动态查询
+
+- `matchesSelector()`
+
+    接收一个css选择符。若调用元素与选择符想匹配返回true；否则返回false 。
+
+    该方法只能用于Element类型，而上述两个方法Document类型，DocumentFragment类型和Element类型均可使用
+
+#### 元素遍历
+***
+对于元素间的空格，IE9及之前版本不会返回文本节点，而其他浏览器则会返回文本节点。这样使用childNodes和firstChild等属性时候行为将不一致。所以新定义了一组属性来弥补这一差异。
+
+#### HTML5
+***
+
+   - 与类相关的补充
+
+       - `getElementsByClassName()`
+
+           接收一个参数，返回带有指定类的所有元素的NodeList。
+       - classList属性
+
+           修改操作className的方法。这个classList是新集合类型DOMTokenList的实例。
+
+           还定义如下的方法：
+
+           `add(value)`：将给定的字符串添加到列表中。若值已经存在，则忽略；
+  
+           `contains(value)`:表示列表中是否有给定的值，存在则返回true；
+
+           `remove(value)`:从列表中删除给定的字符串；
+
+           `toggle(value)`：若列表中存在给定的值，删除它；若没有，添加它。
+
+  - 焦点管理
+
+     `document.activeElement()`始终引用DOM中当前获得了焦点的元素；
+
+      默认情况下，文档刚刚加载完成时，此属性中保存的是document.body元素的引用。文档加载期间，该属性的值为null。
+
+      元素获得焦点的方法：页面加载，用户输入(Tab键)和调用focus()方法。
+
+      `document.hasFocus()`用来检测文档是否获得了焦点，可以确定用户是不是正在与页面交互
+
+  - HTMLDocument的变化 
+
+       - `document.readyState`
+
+           有两个可能的值，loading(正在加载文档)；complete(已经加载完文档)  。
+
+       - `document.compatMode`
+
+           标准模式下值为CSS1Compat；混杂模式下值为BackCompat
+       - `document.head`
+
+           引用文档的head元素
+
+  - 字符集属性
+
+       - `document.charset`
+
+           可以通过<meta>元素，http响应头部或者设置charset属性修改文档中实际使用的字符集
+
+      - `document.defaultCharset`
+
+           表示默认字符集是什么
+
+   - 自定义数据属性
+
+       HTML5规定可以为元素添加非标准的属性，但要添加前缀data-，提供与渲染无关的信息或者语义信息
+
+       添加了自定义属性之后可以通过元素的dataset属性来访问自定义属性的值。dataset属性的值是DOMStringMap 的一个实例，也就是一个名值对儿的实例。在这个映射中，属性名没有data-前缀。
+
+             
