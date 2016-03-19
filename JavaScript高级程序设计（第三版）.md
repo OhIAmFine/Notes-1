@@ -1104,31 +1104,31 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
           };   
          
 
-- 理解原型对象
+   - 理解原型对象
 
-      创建新函数就会为该函数创建一个prototype属性，这个属性指向函数的原型对象，默认情况下，所有原型对象都会自动获得constructor属性，这个属性包含一个指向prototype属性所在函数的指针
+        创建新函数就会为该函数创建一个prototype属性，这个属性指向函数的原型对象，默认情况下，所有原型对象都会自动获得constructor属性，这个属性包含一个指向prototype属性所在函数的指针
+  
+        创建自定义构造函数后，原型对象默认只会获得constructor属性，其他方法均从Object继承而来；
 
-      创建自定义构造函数后，原型对象默认只会获得constructor属性，其他方法均从Object继承而来；
+        调用构造函数创建一个实例后，该实例内部包含一个指针（内部属性），指向构造函数的原型对象 ，ECMA5中叫做[[prototype]]
 
-      调用构造函数创建一个实例后，该实例内部包含一个指针（内部属性），指向构造函数的原型对象 ，ECMA5中叫做[[prototype]]
+        无法访问到[[prototype]],但是可以调用`isPrototypeOf()`方法：
 
-      无法访问到[[prototype]],但是可以调用`isPrototypeOf()`方法：
+            alert (Person.prorotype.isPrototypeOf(person1));  // true
 
-        alert (Person.prorotype.isPrototypeOf(person1));  // true
-
-      ECMAScript5中增加的新方法  `Object.getPrototypeOf()`:
+         ECMAScript5中增加的新方法  `Object.getPrototypeOf()`:
          
-        alert(Object.getPrototypeOf(person1) == Person.prototype); // true
+            alert(Object.getPrototypeOf(person1) == Person.prototype); // true
 
-      每当代码读取某个对象的某个属性时，都会执行一次搜索，首先从对象实例本身开始，如果在实例属性中找到，则直接返回该属性的值；若没有找到，则继续搜索指针指向的原型对象
+         每当代码读取某个对象的某个属性时，都会执行一次搜索，首先从对象实例本身开始，如果在实例属性中找到，则直接返回该属性的值；若没有找到，则继续搜索指针指向的原型对象
 
-     当为对象实例添加一个属性时，这个属性会屏蔽掉原型对象中的同名属性，也就是说，不会修改原型对象中的同名属性值，只是阻止我们通过对象实例属性去访问它。
+         当为对象实例添加一个属性时，这个属性会屏蔽掉原型对象中的同名属性，也就是说，不会修改原型对象中的同名属性值，只是阻止我们通过对象实例属性去访问它。
 
-     使用`hasOwnProperty()`检测一个属性是存在于实例中，还是存在于原型中（只有在给定属性存在于对象实例中时返回true,存在于原型中或者压根儿不存在都是false）：
+        使用`hasOwnProperty()`检测一个属性是存在于实例中，还是存在于原型中（只有在给定属性存在于对象实例中时返回true,存在于原型中或者压根儿不存在都是false）：
 
-        alert(person1.hasOwnProperty("name"));
+            alert(person1.hasOwnProperty("name"));
 
-     - 原型与in操作符
+    - 原型与in操作符
 
         - 单独使用in操作符
 
@@ -1151,7 +1151,7 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
        
             得到所有实例属性，不论其是否可枚举 
 
-     - 更简单的原型语法
+    - 更简单的原型语法
 
              function Person(){}
              Person.prototype = {
@@ -1171,17 +1171,17 @@ ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上创建
             //这里的语法完全重写了默认的prototype对象
             //可以在属性中显式设置constructor属性值为Person，但是这样会导致它的[[Enumerable]]特性设置为true（即可以被枚举）。
 
-     - 原型的动态性
+    - 原型的动态性
 
          原型中查找值是一次搜索，所以对原型对象做的任何修改都可以立即从实例中反映出来；
 
          重写原型对象切断了现有原型和实例之间的联系。
 
-     - 原型对象的原型
+    - 原型对象的原型
 
          通过原声对象的原型，不仅可以取得所有默认方法的引用，而且也可以定义新方法。
 
-     - 原型对象的问题
+    - 原型对象的问题
 
          - 默认情况下所有实例都取得相同的属性值；
          - 不管是基本类型值还是引用类型值，都可以通过在实例上添加一个同名属性来隐藏原型中的对应属性（书上说基本类型值和引用类型值不同，只是说向其中数组添加新字符串时候会影响全局）
