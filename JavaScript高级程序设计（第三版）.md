@@ -1929,7 +1929,43 @@ DOM是针对HTML和XML文档的一个API（应用程序编程接口）
 
 - 跨浏览器的事件处理程序
 
- #### 事件对象
+#### 事件对象
 ***     
 
+在触发DOM上的某个事件时，会产生一个事件对象event，这个对象中包含导致事件的元素，事件类型以及其他与特定事件相关的信息
 
+- DOM中的事件对象
+
+    在事件处理程序内部，对象this始终等于currentTarget的值，而target则只包含事件的实际目标。
+
+    可以使用preventDefault()方法阻止特定事件的默认行为（事件的cancelable属性设置为true）
+
+     stopPropagation()方法用于立即停止时间在DOM层次中的传播，即取消进一步的时间捕获或冒泡。
+
+     事件对象的eventPhase属性可以用来确定事件当前正位于事件流的哪个阶段。如果是在捕获阶段调用的事件处理程序，那么eventPhase等于1；若事件处理程序处于目标对象上，则等于2；若是在冒泡阶段调用的时间处理程序，eventPhase等于3.（尽管处于目标发生在冒泡阶段但是仍然等于2）
+
+     eventPhase = 2 时，this，target，currentTarget始终相等。
+
+    只有在事件处理程序执行期间，event对象才会存在；一旦事件处理程序执行完成，event对象就会被销毁。
+
+- IE中的事件对象
+
+    使用DOM0级方法添加事件处理程序时，event对象作为window对象的一个属性存在：
+
+        var  btn = document.getElementById(‘myBtn’)；
+
+        btn.onclick = function() {
+             var event = window.event;
+             alert(event.type);    // click
+        } 
+
+    若使用attachEvent()添加，则会有一个event对象作为参数被传入事件处理程序函数中
+
+
+
+#### 事件类型
+***   
+
+- UI事件
+
+   
