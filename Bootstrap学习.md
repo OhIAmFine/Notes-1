@@ -259,6 +259,60 @@
 
          placeholder 属性提供可描述输入字段预期值的提示信息（hint）。
 
+    -  下拉选择框select
+  
+         Bootstrap框架中的下拉选择框使用和原始的一致，多行选择设置multiple属性的值为multiple。Bootstrap框架会为这些元素提供统一的样式风格。
+
+    - 文本域textarea
+
+         设置rows可定义其高度，设置cols可以设置其宽度。但如果textarea元素中添加了类名“form-control”类名，则无需设置cols属性。因为Bootstrap框架中的“form-control”样式的表单控件宽度为100%或auto。
+
+    - 复选框checkbox和单选择按钮radio
+    
+        Bootstrap框架中checkbox和radio有点特殊，Bootstrap针对他们做了一些特殊化处理，主要是checkbox和radio与label标签配合使用会出现一些小问题（最头痛的是对齐问题）。使用Bootstrap框架，开发人员无需考虑太多。 
+
+        1、不管是checkbox还是radio都使用label包起来了
+        2、checkbox连同label标签放置在一个名为“.checkbox”的容器内
+        3、radio连同label标签放置在一个名为“.radio”的容器内
+        在Bootstrap框架中，主要借助“.checkbox”和“.radio”样式，来处理复选框、单选按钮与标签的对齐方式。
+
+       - 复选框和单选按钮水平排列
+
+            有时候，为了布局的需要，将复选框和单选按钮需要水平排列。Bootstrap框架也做了这方面的考虑：
+
+            1、如果checkbox需要水平排列，只需要在label标签上添加类名“checkbox-inline”
+
+            2、如果radio需要水平排列，只需要在label标签上添加类名“radio-inline”
+
+            name属性确定单选按钮组 （name属性相同即为一个组，一个组内只能单选）
+
+    - 按钮
+      
+        在Bootstrap中按钮都是采用`<button>`实现
+
+   - 表单控件大小
+
+        可以通过设置控件的height，line-height，padding和font-size等属性来实现控件的高度设置。不过Bootstrap框架还提供了两个不同的类名，用来控制表单控件的高度。这两个类名是：
+ 
+        1、input-sm:让控件比正常大小更小
+
+        2、input-lg:让控件比正常大小更大
+
+        这两个类适用于表单中的input，textarea和select控件
+
+        不管是“input-sm”还是“input-lg”仅对控件高度做了处理。但往往很多时候，我们需要控件宽度也要做一定的变化处理。这个时候就要借住Bootstrap框架的网格系统。
+
+   -  焦点状态
+
+        表单状态的作用：
+ 
+        每一种状态都能给用户传递不同的信息，比如表单有焦点的状态可以告诉用户可以输入或选择东西，禁用状态可以告诉用户不可以输入或选择东西，还有就是表单控件验证状态，可以告诉用户的操作是否正确等。那么在Bootstrap框架中的表单控件也具备这些状态。
+
+        焦点状态是通过伪类“:focus”来实现。Bootstrap框架中表单控件的焦点状态删除了outline的默认样式，重新添加阴影效果。
+
+        要让控件在焦点状态下有上面样式效果，需要给控件添加类名“form-control”
+ 
+
   
 
       
