@@ -180,7 +180,7 @@
 
                只需在后端做一些小改动：
 
-                  header(‘Access-Control-Allow-Origin:*’);
-                  header(‘Access-Control-Allow-Methods:POST,GET’);
+                header(‘Access-Control-Allow-Origin:*’);
+                header(‘Access-Control-Allow-Methods:POST,GET’);
 
       
